@@ -170,10 +170,12 @@
 .nbpc-price-image-wrap {
     flex: 0 0 40%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 12px;
     background: rgba(255, 255, 255, 0.5);
+    gap: 8px;
 }
 
 .nbpc-price-image {
@@ -190,6 +192,11 @@
     justify-content: center;
     gap: 2px;
     padding: 12px 12px 12px 0;
+}
+
+/* Spacer for alignment in channel box */
+.nbpc-spacer {
+    height: 24px;
 }
 
 .nbpc-price-label {
@@ -221,29 +228,25 @@
     color: #666;
 }
 
+/* Savings badge - under image */
 .nbpc-savings {
-    display: inline-block;
-    padding: 3px 8px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #fff;
-    background: #4caf50;
-    border-radius: 10px;
-}
-
-/* Action row - savings badge and book now */
-.nbpc-action-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-    flex-wrap: wrap;
-}
-
-.nbpc-book-now-badge {
     display: inline-block;
     padding: 4px 10px;
     font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+    background: #4caf50;
+    border-radius: 4px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Book now badge - under text */
+.nbpc-book-now-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    margin-top: 6px;
+    font-size: 0.75rem;
     font-weight: 700;
     color: #fff;
     background: #0073aa;
@@ -415,10 +418,18 @@
         font-size: 1.25rem;
     }
 
-    .nbpc-action-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
+    .nbpc-savings {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+    }
+
+    .nbpc-book-now-badge {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+    }
+
+    .nbpc-spacer {
+        height: 20px;
     }
 
     .nbpc-fallback-item {
