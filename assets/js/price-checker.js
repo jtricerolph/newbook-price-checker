@@ -205,8 +205,16 @@
         const unavailableMsg = this.container.querySelector('.nbpc-unavailable-message');
 
         if (minNights > 0 && selectedNights < minNights) {
-            // Minimum nights restriction
-            unavailableMsg.textContent = 'Direct rates require a minimum ' + minNights + ' night stay. Please select ' + minNights + '+ nights.';
+            // Minimum nights restriction - show message with button
+            unavailableMsg.innerHTML = 'Direct rates require a minimum ' + minNights + ' night stay. ' +
+                '<button type="button" class="nbpc-min-nights-btn" data-nights="' + minNights + '">' +
+                'Check ' + minNights + ' nights</button>';
+
+            // Add click handler for the button
+            const btn = unavailableMsg.querySelector('.nbpc-min-nights-btn');
+            if (btn) {
+                btn.addEventListener('click', this.handleMinNightsClick.bind(this));
+            }
         } else {
             // Genuine unavailability
             unavailableMsg.textContent = 'Sorry, no availability for your selected dates.';
@@ -219,6 +227,17 @@
 
         if (showFallback && this.elements.fallbackSection) {
             this.fetchFallbackPrices();
+        }
+    };
+
+    /**
+     * Handle click on minimum nights button
+     */
+    NBPCWidget.prototype.handleMinNightsClick = function(e) {
+        const nights = e.target.dataset.nights;
+        if (nights) {
+            this.elements.nightsSelect.value = nights;
+            this.fetchPrices();
         }
     };
 

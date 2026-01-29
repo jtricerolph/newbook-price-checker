@@ -280,6 +280,25 @@
     border-radius: 8px;
 }
 
+/* Minimum nights button */
+.nbpc-min-nights-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #fff;
+    background: #0073aa;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.nbpc-min-nights-btn:hover {
+    background: #005a87;
+}
+
 .nbpc-unavailable-message {
     margin: 0;
     color: #e65100;
