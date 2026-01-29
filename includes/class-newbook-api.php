@@ -164,6 +164,7 @@ class NBPC_NewBook_API {
     /**
      * Flatten any data type to a readable string
      * Handles strings, arrays, objects, and nested structures
+     * Skips date-like values
      */
     private function flatten_to_string($data) {
         if (empty($data)) {
@@ -171,38 +172,49 @@ class NBPC_NewBook_API {
         }
 
         if (is_string($data)) {
+            // Skip if it looks like a date
+            if ($this->looks_like_date($data)) {
+                return '';
+            }
             return $data;
         }
 
         if (is_array($data)) {
             $strings = array();
             foreach ($data as $key => $value) {
-                if (is_string($value)) {
+                // Skip keys that are date-related
+                if (is_string($key) && preg_match('/date|period|from|to|start|end/i', $key)) {
+                    continue;
+                }
+
+                if (is_string($value) && !$this->looks_like_date($value)) {
                     $strings[] = $value;
                 } elseif (is_array($value) || is_object($value)) {
-                    // Try to extract common text fields from objects/arrays
+                    // Try to extract inclusions-specific fields first
                     $value = (array) $value;
-                    if (isset($value['name'])) {
-                        $strings[] = $value['name'];
-                    } elseif (isset($value['label'])) {
-                        $strings[] = $value['label'];
-                    } elseif (isset($value['text'])) {
-                        $strings[] = $value['text'];
-                    } elseif (isset($value['description'])) {
-                        $strings[] = $value['description'];
-                    } elseif (isset($value['value'])) {
-                        $strings[] = $value['value'];
-                    } else {
-                        // Try first string value found
-                        foreach ($value as $v) {
-                            if (is_string($v) && !empty($v)) {
-                                $strings[] = $v;
+                    $extracted = null;
+
+                    // Look for inclusion-specific fields
+                    foreach (array('inclusion', 'inclusions', 'include', 'includes', 'feature', 'amenity') as $field) {
+                        if (isset($value[$field]) && is_string($value[$field])) {
+                            $extracted = $value[$field];
+                            break;
+                        }
+                    }
+
+                    // Fall back to common text fields
+                    if (!$extracted) {
+                        foreach (array('name', 'label', 'text', 'description', 'title') as $field) {
+                            if (isset($value[$field]) && is_string($value[$field]) && !$this->looks_like_date($value[$field])) {
+                                $extracted = $value[$field];
                                 break;
                             }
                         }
                     }
-                } elseif (is_numeric($value)) {
-                    $strings[] = (string) $value;
+
+                    if ($extracted) {
+                        $strings[] = $extracted;
+                    }
                 }
             }
             return implode(', ', array_filter($strings));
@@ -213,6 +225,28 @@ class NBPC_NewBook_API {
         }
 
         return (string) $data;
+    }
+
+    /**
+     * Check if a string looks like a date
+     */
+    private function looks_like_date($str) {
+        if (!is_string($str)) {
+            return false;
+        }
+        // Check for day names
+        if (preg_match('/\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/i', $str)) {
+            return true;
+        }
+        // Check for month names with numbers
+        if (preg_match('/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d/i', $str)) {
+            return true;
+        }
+        // Check for date patterns like DD-MM-YYYY or YYYY-MM-DD
+        if (preg_match('/\d{2,4}[-\/]\d{2}[-\/]\d{2,4}/', $str)) {
+            return true;
+        }
+        return false;
     }
 
     /**
