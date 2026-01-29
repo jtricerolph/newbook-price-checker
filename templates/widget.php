@@ -99,8 +99,8 @@ $widget_id = 'nbpc-widget-' . uniqid();
                 </div>
             </div>
 
-            <!-- Direct Price -->
-            <div class="nbpc-price-box nbpc-online-price nbpc-highlight">
+            <!-- Direct Price (clickable link) -->
+            <a href="#" class="nbpc-price-box nbpc-online-price nbpc-highlight nbpc-price-link" target="_blank" rel="noopener">
                 <?php if (!empty($data['direct_image'])) : ?>
                     <img src="<?php echo esc_url($data['direct_image']); ?>" alt="<?php esc_attr_e('Book Direct', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
                 <?php endif; ?>
@@ -110,12 +110,6 @@ $widget_id = 'nbpc-widget-' . uniqid();
                     <span class="nbpc-room-type nbpc-online-room"></span>
                     <span class="nbpc-savings"></span>
                 </div>
-            </div>
-        </div>
-
-        <div class="nbpc-book-now-container">
-            <a href="#" class="nbpc-book-now-button" target="_blank" rel="noopener">
-                <?php esc_html_e('Book Now - Best Price Guaranteed', 'newbook-price-checker'); ?>
             </a>
         </div>
     </div>

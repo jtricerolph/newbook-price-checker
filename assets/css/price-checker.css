@@ -145,15 +145,16 @@
 
 .nbpc-price-comparison {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    gap: 15px;
     margin-bottom: 15px;
 }
 
 .nbpc-price-box {
+    flex: 1;
     display: flex;
-    align-items: center;
-    gap: 15px;
+    align-items: flex-start;
+    gap: 12px;
     padding: 12px 15px;
     border-radius: 8px;
     background: #f5f5f5;
@@ -168,33 +169,33 @@
 /* Price box images - left side */
 .nbpc-price-image {
     flex-shrink: 0;
-    width: 60px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
+    margin-top: 2px;
 }
 
-/* Price text - right side */
+/* Price text - right side, stacked vertically */
 .nbpc-price-text {
     flex: 1;
     display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .nbpc-price-label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #666;
-    min-width: 80px;
 }
 
 .nbpc-price-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: #333;
+    line-height: 1.2;
 }
 
 .nbpc-channel-price .nbpc-price-value {
@@ -207,42 +208,37 @@
 }
 
 .nbpc-room-type {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #666;
 }
 
 .nbpc-savings {
+    display: inline-block;
     padding: 3px 8px;
+    margin-top: 4px;
     font-size: 0.7rem;
     font-weight: 600;
     color: #fff;
     background: #4caf50;
     border-radius: 10px;
+    width: fit-content;
 }
 
-/* Book Now Button */
-.nbpc-book-now-container {
-    text-align: center;
-}
-
-.nbpc-book-now-button {
-    display: inline-block;
-    padding: 14px 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
-    background: #0073aa;
-    border: none;
-    border-radius: 4px;
+/* Clickable price box link */
+.nbpc-price-link {
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.nbpc-book-now-button:hover {
-    background: #005a87;
-    color: #fff;
+.nbpc-price-link:hover {
     text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.nbpc-price-link:active {
+    transform: translateY(0);
 }
 
 /* Unavailable State */
@@ -373,16 +369,16 @@
         min-width: 70px;
     }
 
+    .nbpc-price-comparison {
+        flex-direction: column;
+    }
+
     .nbpc-price-box {
         padding: 10px 12px;
     }
 
     .nbpc-price-value {
         font-size: 1.25rem;
-    }
-
-    .nbpc-price-label {
-        min-width: 70px;
     }
 
     .nbpc-fallback-item {

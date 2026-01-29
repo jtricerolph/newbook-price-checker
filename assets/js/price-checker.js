@@ -39,7 +39,7 @@
             channelPrice: container.querySelector('.nbpc-channel-value'),
             channelRoom: container.querySelector('.nbpc-channel-room'),
             savings: container.querySelector('.nbpc-savings'),
-            bookNowButton: container.querySelector('.nbpc-book-now-button'),
+            priceLink: container.querySelector('.nbpc-price-link'),
             fallbackList: container.querySelector('.nbpc-fallback-list'),
             errorMessage: container.querySelector('.nbpc-error-message'),
             bookingUrlBase: container.querySelector('.nbpc-booking-url-base'),
@@ -179,9 +179,9 @@
             this.elements.savings.style.display = 'none';
         }
 
-        // Update booking URL
-        if (data.booking_url) {
-            this.elements.bookNowButton.href = data.booking_url;
+        // Update booking URL on price link
+        if (data.booking_url && this.elements.priceLink) {
+            this.elements.priceLink.href = data.booking_url;
         }
 
         this.showSection('results');
