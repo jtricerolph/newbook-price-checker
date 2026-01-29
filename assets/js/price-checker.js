@@ -36,9 +36,11 @@
             errorSection: container.querySelector('.nbpc-error'),
             onlinePrice: container.querySelector('.nbpc-online-value'),
             onlineRoom: container.querySelector('.nbpc-online-room'),
+            onlineTariff: container.querySelector('.nbpc-online-tariff'),
             channelPrice: container.querySelector('.nbpc-channel-value'),
             channelRoom: container.querySelector('.nbpc-channel-room'),
-            savings: container.querySelector('.nbpc-savings'),
+            channelTariff: container.querySelector('.nbpc-channel-tariff'),
+            bookNowText: container.querySelector('.nbpc-book-now-text'),
             priceLink: container.querySelector('.nbpc-price-link'),
             fallbackList: container.querySelector('.nbpc-fallback-list'),
             errorMessage: container.querySelector('.nbpc-error-message'),
@@ -159,24 +161,28 @@
         // Update online price
         this.elements.onlinePrice.textContent = currency + data.online.cheapest_price.toFixed(2);
         this.elements.onlineRoom.textContent = data.online.room_type;
+        this.elements.onlineTariff.textContent = data.online.tariff_name || '';
 
         // Update channel price
+        let savings = 0;
         if (data.channels && data.channels.available && data.channels.cheapest_price > 0) {
             this.elements.channelPrice.textContent = currency + data.channels.cheapest_price.toFixed(2);
             this.elements.channelRoom.textContent = data.channels.room_type;
+            this.elements.channelTariff.textContent = data.channels.tariff_name || '';
 
             // Calculate savings
-            const savings = data.channels.cheapest_price - data.online.cheapest_price;
-            if (savings > 0) {
-                this.elements.savings.textContent = 'Save ' + currency + savings.toFixed(2);
-                this.elements.savings.style.display = 'inline-block';
-            } else {
-                this.elements.savings.style.display = 'none';
-            }
+            savings = data.channels.cheapest_price - data.online.cheapest_price;
         } else {
             this.elements.channelPrice.innerHTML = '<span style="font-size: 14px;">Unavailable</span>';
-            this.elements.channelRoom.textContent = '';
-            this.elements.savings.style.display = 'none';
+            this.elements.channelRoom.textContent = 'Only available direct';
+            this.elements.channelTariff.textContent = '';
+        }
+
+        // Update Book Now button text with savings
+        if (savings > 0) {
+            this.elements.bookNowText.textContent = 'Book Now - Save ' + currency + savings.toFixed(2);
+        } else {
+            this.elements.bookNowText.textContent = 'Book Now';
         }
 
         // Update booking URL on all price links

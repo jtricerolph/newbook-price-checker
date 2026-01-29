@@ -164,14 +164,6 @@
 .nbpc-price-box.nbpc-highlight {
     background: #e8f5e9;
     border-color: #4caf50;
-    flex-direction: column;
-}
-
-/* Content wrapper for direct price box */
-.nbpc-price-content {
-    display: flex;
-    align-items: stretch;
-    flex: 1;
 }
 
 /* Image container - 40% width */
@@ -199,11 +191,6 @@
     justify-content: center;
     gap: 2px;
     padding: 12px 12px 12px 0;
-}
-
-/* Spacer for alignment in channel box */
-.nbpc-spacer {
-    height: 24px;
 }
 
 .nbpc-price-label {
@@ -235,23 +222,10 @@
     color: #666;
 }
 
-/* Savings badge - centered at bottom of direct price box */
-.nbpc-savings-wrap {
-    text-align: center;
-    padding: 0 12px 10px;
-}
-
-.nbpc-savings {
-    display: inline-block;
-    padding: 6px 16px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #4caf50;
-    background: transparent;
-    border: 2px solid #4caf50;
-    border-radius: 4px;
-    text-align: center;
-    white-space: nowrap;
+.nbpc-tariff-name {
+    font-size: 0.65rem;
+    color: #888;
+    font-style: italic;
 }
 
 /* Book Now Button - below price boxes */
@@ -467,20 +441,6 @@
 
     .nbpc-price-value {
         font-size: 1.25rem;
-    }
-
-    .nbpc-savings {
-        font-size: 0.75rem;
-        padding: 5px 12px;
-    }
-
-    .nbpc-book-now-badge {
-        font-size: 0.7rem;
-        padding: 5px 10px;
-    }
-
-    .nbpc-spacer {
-        height: 20px;
     }
 
     .nbpc-fallback-item {

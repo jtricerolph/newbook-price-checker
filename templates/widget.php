@@ -93,32 +93,27 @@ $widget_id = 'nbpc-widget-' . uniqid();
                     <?php if (!empty($data['channel_image'])) : ?>
                         <img src="<?php echo esc_url($data['channel_image']); ?>" alt="<?php esc_attr_e('Other Sites', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
                     <?php endif; ?>
-                    <span class="nbpc-spacer"></span>
                 </div>
                 <div class="nbpc-price-text">
                     <span class="nbpc-price-label"><?php esc_html_e('Other Sites', 'newbook-price-checker'); ?></span>
                     <span class="nbpc-price-value nbpc-channel-value"></span>
                     <span class="nbpc-room-type nbpc-channel-room"></span>
-                    <span class="nbpc-spacer"></span>
+                    <span class="nbpc-tariff-name nbpc-channel-tariff"></span>
                 </div>
             </div>
 
             <!-- Direct Price (clickable link) -->
             <a href="#" class="nbpc-price-box nbpc-online-price nbpc-highlight nbpc-price-link" target="_blank" rel="noopener">
-                <div class="nbpc-price-content">
-                    <div class="nbpc-price-image-wrap">
-                        <?php if (!empty($data['direct_image'])) : ?>
-                            <img src="<?php echo esc_url($data['direct_image']); ?>" alt="<?php esc_attr_e('Book Direct', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
-                        <?php endif; ?>
-                    </div>
-                    <div class="nbpc-price-text">
-                        <span class="nbpc-price-label"><?php esc_html_e('Book Direct', 'newbook-price-checker'); ?></span>
-                        <span class="nbpc-price-value nbpc-online-value"></span>
-                        <span class="nbpc-room-type nbpc-online-room"></span>
-                    </div>
+                <div class="nbpc-price-image-wrap">
+                    <?php if (!empty($data['direct_image'])) : ?>
+                        <img src="<?php echo esc_url($data['direct_image']); ?>" alt="<?php esc_attr_e('Book Direct', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
+                    <?php endif; ?>
                 </div>
-                <div class="nbpc-savings-wrap">
-                    <span class="nbpc-savings"></span>
+                <div class="nbpc-price-text">
+                    <span class="nbpc-price-label"><?php esc_html_e('Book Direct', 'newbook-price-checker'); ?></span>
+                    <span class="nbpc-price-value nbpc-online-value"></span>
+                    <span class="nbpc-room-type nbpc-online-room"></span>
+                    <span class="nbpc-tariff-name nbpc-online-tariff"></span>
                 </div>
             </a>
         </div>
@@ -126,7 +121,7 @@ $widget_id = 'nbpc-widget-' . uniqid();
         <!-- Book Now Button -->
         <div class="nbpc-book-now-wrap">
             <a href="#" class="nbpc-book-now-btn nbpc-price-link" target="_blank" rel="noopener">
-                <?php esc_html_e('Book Now', 'newbook-price-checker'); ?>
+                <span class="nbpc-book-now-text"><?php esc_html_e('Book Now', 'newbook-price-checker'); ?></span>
             </a>
         </div>
     </div>
