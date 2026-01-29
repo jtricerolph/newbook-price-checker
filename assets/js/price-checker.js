@@ -20,7 +20,9 @@
     function NBPCWidget(container) {
         this.container = container;
         this.siteCode = container.dataset.site;
+        this.theme = container.dataset.theme || 'best_rate_only';
         this.debounceTimer = null;
+        this.allRates = []; // Store all rates for tabbed view
 
         // Cache DOM elements
         this.elements = {
@@ -37,15 +39,20 @@
             onlinePrice: container.querySelector('.nbpc-online-value'),
             onlineRoom: container.querySelector('.nbpc-online-room'),
             onlineTariff: container.querySelector('.nbpc-online-tariff'),
+            onlineLabel: container.querySelector('.nbpc-online-price .nbpc-price-label'),
             channelPrice: container.querySelector('.nbpc-channel-value'),
             channelRoom: container.querySelector('.nbpc-channel-room'),
             channelTariff: container.querySelector('.nbpc-channel-tariff'),
+            channelLabel: container.querySelector('.nbpc-channel-price .nbpc-price-label'),
             bookNowText: container.querySelector('.nbpc-book-now-text'),
             priceLink: container.querySelector('.nbpc-price-link'),
             fallbackList: container.querySelector('.nbpc-fallback-list'),
             errorMessage: container.querySelector('.nbpc-error-message'),
             bookingUrlBase: container.querySelector('.nbpc-booking-url-base'),
             showFallback: container.querySelector('.nbpc-show-fallback'),
+            rateOptions: container.querySelector('.nbpc-rate-options'),
+            roomTabs: container.querySelector('.nbpc-room-tabs'),
+            rateList: container.querySelector('.nbpc-rate-list'),
         };
 
         this.init();
@@ -157,6 +164,17 @@
      */
     NBPCWidget.prototype.displayResults = function(data) {
         const currency = nbpcData.currency;
+        const isOptionsTheme = this.theme === 'best_rate_with_options';
+
+        // Update labels based on theme
+        if (isOptionsTheme) {
+            if (this.elements.channelLabel) {
+                this.elements.channelLabel.textContent = 'Others Best Rate';
+            }
+            if (this.elements.onlineLabel) {
+                this.elements.onlineLabel.textContent = 'Direct Best Rate';
+            }
+        }
 
         // Update online price
         this.elements.onlinePrice.textContent = currency + data.online.cheapest_price.toFixed(2);
@@ -178,11 +196,17 @@
             this.elements.channelTariff.textContent = '';
         }
 
-        // Update Book Now button text with savings
-        if (savings > 0) {
-            this.elements.bookNowText.textContent = 'Book Now - Save ' + currency + savings.toFixed(2);
-        } else {
+        // Update Book Now button text based on theme
+        if (isOptionsTheme) {
+            // Options theme: just "Book Now"
             this.elements.bookNowText.textContent = 'Book Now';
+        } else {
+            // Best Rate Only theme: include savings
+            if (savings > 0) {
+                this.elements.bookNowText.textContent = 'Book Now - Save ' + currency + savings.toFixed(2);
+            } else {
+                this.elements.bookNowText.textContent = 'Book Now';
+            }
         }
 
         // Update booking URL on all price links
@@ -193,7 +217,90 @@
             });
         }
 
+        // Show rate options section for the options theme
+        if (isOptionsTheme && data.all_rates && data.all_rates.length > 0) {
+            this.allRates = data.all_rates;
+            this.buildRateTabs();
+            if (this.elements.rateOptions) {
+                this.elements.rateOptions.style.display = 'block';
+            }
+        } else if (this.elements.rateOptions) {
+            this.elements.rateOptions.style.display = 'none';
+        }
+
         this.showSection('results');
+    };
+
+    /**
+     * Build room type tabs and display first room's rates
+     */
+    NBPCWidget.prototype.buildRateTabs = function() {
+        if (!this.elements.roomTabs || !this.allRates.length) {
+            return;
+        }
+
+        // Build tab buttons
+        let tabsHtml = '';
+        this.allRates.forEach(function(room, index) {
+            const activeClass = index === 0 ? ' nbpc-tab-active' : '';
+            tabsHtml += '<button type="button" class="nbpc-room-tab' + activeClass + '" data-index="' + index + '">' +
+                this.escapeHtml(room.room_type) +
+                '</button>';
+        }.bind(this));
+
+        this.elements.roomTabs.innerHTML = tabsHtml;
+
+        // Add click handlers for tabs
+        const tabs = this.elements.roomTabs.querySelectorAll('.nbpc-room-tab');
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', this.handleTabClick.bind(this));
+        }.bind(this));
+
+        // Show first room's rates
+        this.showRoomRates(0);
+    };
+
+    /**
+     * Handle tab click
+     */
+    NBPCWidget.prototype.handleTabClick = function(e) {
+        const index = parseInt(e.target.dataset.index, 10);
+
+        // Update active tab
+        const tabs = this.elements.roomTabs.querySelectorAll('.nbpc-room-tab');
+        tabs.forEach(function(tab) {
+            tab.classList.remove('nbpc-tab-active');
+        });
+        e.target.classList.add('nbpc-tab-active');
+
+        // Show selected room's rates
+        this.showRoomRates(index);
+    };
+
+    /**
+     * Show rates for a specific room type
+     */
+    NBPCWidget.prototype.showRoomRates = function(index) {
+        if (!this.elements.rateList || !this.allRates[index]) {
+            return;
+        }
+
+        const currency = nbpcData.currency;
+        const room = this.allRates[index];
+        let html = '';
+
+        room.rates.forEach(function(rate) {
+            const description = rate.description || rate.inclusions || '';
+            html += '<div class="nbpc-rate-item">' +
+                '<div class="nbpc-rate-info">' +
+                '<div class="nbpc-rate-name">' + this.escapeHtml(rate.tariff_name) + '</div>' +
+                (description ? '<div class="nbpc-rate-description">' + this.escapeHtml(description) + '</div>' : '') +
+                '</div>' +
+                '<div class="nbpc-rate-price">' + currency + rate.price.toFixed(2) + '</div>' +
+                '</div>';
+        }.bind(this));
+
+        this.elements.rateList.innerHTML = html;
     };
 
     /**

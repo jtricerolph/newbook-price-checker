@@ -36,6 +36,7 @@ class NBPC_Shortcode {
             'show_fallback' => 'true',
             'booking_url' => '',
             'title' => '',
+            'theme' => '',
         ), $atts, 'newbook_price_checker');
 
         // Get site configuration
@@ -49,6 +50,9 @@ class NBPC_Shortcode {
             return '<p class="nbpc-error">' . esc_html__('Price checker not configured. Please configure a site in Settings > NewBook Price Checker.', 'newbook-price-checker') . '</p>';
         }
 
+        // Determine theme
+        $theme = !empty($atts['theme']) ? $atts['theme'] : $plugin->get_option('widget_theme', 'best_rate_only');
+
         // Prepare data for template
         $data = array(
             'site_code' => $site['code'],
@@ -56,6 +60,7 @@ class NBPC_Shortcode {
             'booking_url' => !empty($atts['booking_url']) ? $atts['booking_url'] : $site['booking_url'],
             'show_fallback' => $atts['show_fallback'] !== 'false' && $plugin->get_option('enable_fallback', false),
             'title' => $atts['title'],
+            'theme' => $theme,
             'currency' => $plugin->get_currency_symbol(),
             'direct_image' => $plugin->get_option('direct_image', ''),
             'channel_image' => $plugin->get_option('channel_image', ''),

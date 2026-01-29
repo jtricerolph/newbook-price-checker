@@ -89,6 +89,9 @@ class NBPC_NewBook_API {
         $online_cheapest = $this->find_cheapest_rate($online_data);
         $channel_cheapest = $this->find_cheapest_rate($channel_data);
 
+        // Get all rates grouped by room type for expanded view
+        $all_rates = $this->get_all_rates_grouped($online_data);
+
         return array(
             'success' => true,
             'site' => array(
@@ -98,7 +101,58 @@ class NBPC_NewBook_API {
             ),
             'online' => $online_cheapest,
             'channels' => $channel_cheapest,
+            'all_rates' => $all_rates,
         );
+    }
+
+    /**
+     * Get all available rates grouped by room type
+     */
+    private function get_all_rates_grouped($data) {
+        $grouped = array();
+
+        if (empty($data) || !isset($data['data'])) {
+            return $grouped;
+        }
+
+        foreach ($data['data'] as $category) {
+            $category_name = $category['category_name'] ?? 'Unknown';
+            $sites_available = isset($category['sites_available']) ? intval($category['sites_available']) : 0;
+
+            if ($sites_available <= 0 || empty($category['tariffs_available'])) {
+                continue;
+            }
+
+            $rates = array();
+            foreach ($category['tariffs_available'] as $tariff) {
+                $tariff_success = $tariff['tariff_success'] ?? '';
+                if ($tariff_success !== 'true') {
+                    continue;
+                }
+
+                $price = floatval($tariff['tariff_total'] ?? 0);
+                if ($price <= 0) {
+                    continue;
+                }
+
+                $rates[] = array(
+                    'tariff_name' => $tariff['tariff_label'] ?? '',
+                    'price' => $price,
+                    'description' => $tariff['tariff_message'] ?? '',
+                    'inclusions' => $tariff['tariff_inclusions'] ?? '',
+                );
+            }
+
+            if (!empty($rates)) {
+                $grouped[] = array(
+                    'room_type' => $category_name,
+                    'available' => $sites_available,
+                    'rates' => $rates,
+                );
+            }
+        }
+
+        return $grouped;
     }
 
     /**

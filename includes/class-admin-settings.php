@@ -52,6 +52,23 @@ class NBPC_Admin_Settings {
         );
 
         add_settings_field(
+            'widget_theme',
+            __('Widget Theme', 'newbook-price-checker'),
+            array($this, 'render_select_field'),
+            'nbpc-settings',
+            'nbpc_display_section',
+            array(
+                'field' => 'widget_theme',
+                'default' => 'best_rate_only',
+                'options' => array(
+                    'best_rate_only' => __('Best Rate Only', 'newbook-price-checker'),
+                    'best_rate_with_options' => __('Best Rate Savings, Show Options', 'newbook-price-checker'),
+                ),
+                'description' => 'Choose how the price comparison widget displays rates'
+            )
+        );
+
+        add_settings_field(
             'currency_symbol',
             __('Currency Symbol', 'newbook-price-checker'),
             array($this, 'render_text_field'),
@@ -239,6 +256,10 @@ class NBPC_Admin_Settings {
                     <tr>
                         <td><code>[newbook_price_checker booking_url="https://..."]</code></td>
                         <td><?php esc_html_e('Override the booking URL for the Book Now button', 'newbook-price-checker'); ?></td>
+                    </tr>
+                    <tr>
+                        <td><code>[newbook_price_checker theme="best_rate_with_options"]</code></td>
+                        <td><?php esc_html_e('Override the widget theme (best_rate_only or best_rate_with_options)', 'newbook-price-checker'); ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -448,6 +469,23 @@ class NBPC_Admin_Settings {
         <?php
     }
 
+    public function render_select_field($args) {
+        $options = get_option('nbpc_settings', array());
+        $value = isset($options[$args['field']]) ? $options[$args['field']] : $args['default'];
+        ?>
+        <select name="nbpc_settings[<?php echo esc_attr($args['field']); ?>]">
+            <?php foreach ($args['options'] as $key => $label) : ?>
+                <option value="<?php echo esc_attr($key); ?>" <?php selected($value, $key); ?>>
+                    <?php echo esc_html($label); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <?php if (isset($args['description'])) : ?>
+            <p class="description"><?php echo esc_html($args['description']); ?></p>
+        <?php endif; ?>
+        <?php
+    }
+
     /**
      * Sanitize settings
      */
@@ -455,6 +493,7 @@ class NBPC_Admin_Settings {
         $sanitized = array();
 
         // Display settings
+        $sanitized['widget_theme'] = sanitize_text_field($input['widget_theme'] ?? 'best_rate_only');
         $sanitized['currency_symbol'] = sanitize_text_field($input['currency_symbol'] ?? '£');
         $sanitized['default_adults'] = absint($input['default_adults'] ?? 2);
         $sanitized['default_children'] = absint($input['default_children'] ?? 0);

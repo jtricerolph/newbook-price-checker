@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 $widget_id = 'nbpc-widget-' . uniqid();
 ?>
 
-<div class="nbpc-widget" id="<?php echo esc_attr($widget_id); ?>" data-site="<?php echo esc_attr($data['site_code']); ?>">
+<div class="nbpc-widget nbpc-theme-<?php echo esc_attr($data['theme']); ?>" id="<?php echo esc_attr($widget_id); ?>" data-site="<?php echo esc_attr($data['site_code']); ?>" data-theme="<?php echo esc_attr($data['theme']); ?>">
 
     <?php if (!empty($data['title'])) : ?>
         <h3 class="nbpc-title"><?php echo esc_html($data['title']); ?></h3>
@@ -124,6 +124,12 @@ $widget_id = 'nbpc-widget-' . uniqid();
                 <span class="nbpc-book-now-text"><?php esc_html_e('Book Now', 'newbook-price-checker'); ?></span>
             </a>
         </div>
+
+        <!-- Rate Options Section (for best_rate_with_options theme) -->
+        <div class="nbpc-rate-options" style="display: none;">
+            <div class="nbpc-room-tabs"></div>
+            <div class="nbpc-rate-list"></div>
+        </div>
     </div>
 
     <!-- Unavailable State -->
@@ -151,4 +157,5 @@ $widget_id = 'nbpc-widget-' . uniqid();
     <!-- Hidden data for JS -->
     <input type="hidden" class="nbpc-booking-url-base" value="<?php echo esc_attr($data['booking_url']); ?>" />
     <input type="hidden" class="nbpc-show-fallback" value="<?php echo $data['show_fallback'] ? '1' : '0'; ?>" />
+    <input type="hidden" class="nbpc-theme" value="<?php echo esc_attr($data['theme']); ?>" />
 </div>
