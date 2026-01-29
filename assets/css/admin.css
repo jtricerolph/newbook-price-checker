@@ -1,0 +1,74 @@
+/**
+ * NewBook Price Checker - Admin Styles
+ */
+
+/* Sites Container */
+#nbpc-sites-container {
+    margin-bottom: 20px;
+}
+
+/* Site Row */
+.nbpc-site-row {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.nbpc-site-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: #f6f7f7;
+    border-bottom: 1px solid #ccd0d4;
+    gap: 10px;
+}
+
+.nbpc-site-title {
+    flex: 1;
+    font-weight: 600;
+    color: #1e1e1e;
+}
+
+.nbpc-site-fields {
+    padding: 0 15px;
+}
+
+.nbpc-site-fields .form-table {
+    margin: 0;
+}
+
+.nbpc-site-fields .form-table th {
+    width: 150px;
+    padding: 15px 10px 15px 0;
+}
+
+.nbpc-site-fields .form-table td {
+    padding: 15px 10px;
+}
+
+/* Buttons */
+.nbpc-toggle-site,
+.nbpc-remove-site {
+    flex-shrink: 0;
+}
+
+#nbpc-add-site {
+    margin-top: 10px;
+}
+
+/* Password visibility toggle (if needed later) */
+.nbpc-password-field {
+    position: relative;
+}
+
+.nbpc-password-field input {
+    padding-right: 40px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+    .nbpc-site-fields .form-table th {
+        width: auto;
+    }
+}

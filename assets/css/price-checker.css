@@ -1,0 +1,342 @@
+/**
+ * NewBook Price Checker - Frontend Styles
+ */
+
+/* Widget Container */
+.nbpc-widget {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.nbpc-widget * {
+    box-sizing: border-box;
+}
+
+.nbpc-title {
+    margin: 0 0 20px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Form Styles */
+.nbpc-form {
+    margin-bottom: 20px;
+}
+
+.nbpc-form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.nbpc-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.nbpc-field label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.nbpc-date-input,
+.nbpc-select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.nbpc-date-input:focus,
+.nbpc-select:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+}
+
+.nbpc-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+/* Intro Text */
+.nbpc-intro {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* Loading State */
+.nbpc-loading {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.nbpc-spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 15px;
+    border: 3px solid #eee;
+    border-top-color: #0073aa;
+    border-radius: 50%;
+    animation: nbpc-spin 0.8s linear infinite;
+}
+
+@keyframes nbpc-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.nbpc-loading p {
+    margin: 0;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+/* Results Section */
+.nbpc-results {
+    padding: 10px 0;
+}
+
+.nbpc-price-comparison {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.nbpc-price-box {
+    flex: 1;
+    padding: 20px 15px;
+    border-radius: 8px;
+    text-align: center;
+    background: #f5f5f5;
+    border: 2px solid transparent;
+}
+
+.nbpc-price-box.nbpc-highlight {
+    background: #e8f5e9;
+    border-color: #4caf50;
+}
+
+.nbpc-price-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.nbpc-price-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.nbpc-channel-price .nbpc-price-value {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.nbpc-highlight .nbpc-price-value {
+    color: #2e7d32;
+}
+
+.nbpc-room-type {
+    display: block;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.nbpc-savings {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background: #4caf50;
+    border-radius: 12px;
+}
+
+/* Book Now Button */
+.nbpc-book-now-container {
+    text-align: center;
+}
+
+.nbpc-book-now-button {
+    display: inline-block;
+    padding: 14px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: #0073aa;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.nbpc-book-now-button:hover {
+    background: #005a87;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Unavailable State */
+.nbpc-unavailable {
+    text-align: center;
+    padding: 30px 20px;
+    background: #fff3e0;
+    border-radius: 8px;
+}
+
+.nbpc-unavailable-message {
+    margin: 0;
+    color: #e65100;
+}
+
+/* Fallback Properties */
+.nbpc-fallback {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.nbpc-fallback-title {
+    margin: 0 0 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.nbpc-fallback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nbpc-fallback-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 6px;
+}
+
+.nbpc-fallback-item-info {
+    flex: 1;
+}
+
+.nbpc-fallback-item-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.nbpc-fallback-item-price {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.nbpc-fallback-item-link {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #0073aa;
+    background: #fff;
+    border: 1px solid #0073aa;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.nbpc-fallback-item-link:hover {
+    background: #0073aa;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nbpc-fallback-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.nbpc-fallback-loading .nbpc-spinner {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border-width: 2px;
+}
+
+/* Error State */
+.nbpc-error {
+    text-align: center;
+    padding: 20px;
+    background: #ffebee;
+    border-radius: 8px;
+}
+
+.nbpc-error-message {
+    margin: 0;
+    color: #c62828;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .nbpc-widget {
+        padding: 15px;
+    }
+
+    .nbpc-form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nbpc-price-comparison {
+        flex-direction: column;
+    }
+
+    .nbpc-price-box {
+        padding: 15px;
+    }
+
+    .nbpc-price-value {
+        font-size: 1.5rem;
+    }
+
+    .nbpc-fallback-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .nbpc-fallback-item-link {
+        width: 100%;
+        text-align: center;
+    }
+}
