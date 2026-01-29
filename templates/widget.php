@@ -118,17 +118,17 @@ $widget_id = 'nbpc-widget-' . uniqid();
             </a>
         </div>
 
+        <!-- Rate Options Section (for best_rate_with_options theme) -->
+        <div class="nbpc-rate-options" style="display: none;">
+            <div class="nbpc-room-tabs"></div>
+            <div class="nbpc-rate-list"></div>
+        </div>
+
         <!-- Book Now Button -->
         <div class="nbpc-book-now-wrap">
             <a href="#" class="nbpc-book-now-btn nbpc-price-link" target="_blank" rel="noopener">
                 <span class="nbpc-book-now-text"><?php esc_html_e('Book Now', 'newbook-price-checker'); ?></span>
             </a>
-        </div>
-
-        <!-- Rate Options Section (for best_rate_with_options theme) -->
-        <div class="nbpc-rate-options" style="display: none;">
-            <div class="nbpc-room-tabs"></div>
-            <div class="nbpc-rate-list"></div>
         </div>
     </div>
 

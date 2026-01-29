@@ -135,11 +135,23 @@ class NBPC_NewBook_API {
                     continue;
                 }
 
+                // Handle inclusions - may be array or string
+                $inclusions = $tariff['tariff_inclusions'] ?? '';
+                if (is_array($inclusions)) {
+                    $inclusions = implode(', ', array_filter($inclusions));
+                }
+
+                // Handle message - may be array or string
+                $description = $tariff['tariff_message'] ?? '';
+                if (is_array($description)) {
+                    $description = implode(', ', array_filter($description));
+                }
+
                 $rates[] = array(
                     'tariff_name' => $tariff['tariff_label'] ?? '',
                     'price' => $price,
-                    'description' => $tariff['tariff_message'] ?? '',
-                    'inclusions' => $tariff['tariff_inclusions'] ?? '',
+                    'description' => $description,
+                    'inclusions' => $inclusions,
                 );
             }
 
