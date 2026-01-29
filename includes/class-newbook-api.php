@@ -135,11 +135,11 @@ class NBPC_NewBook_API {
                     continue;
                 }
 
-                // Handle inclusions - may be array, object, or string
-                $inclusions = $this->flatten_to_string($tariff['tariff_inclusions'] ?? '');
+                // Use tariff_short_description for inclusions (e.g. "includes accommodation and full English breakfast")
+                $inclusions = $tariff['tariff_short_description'] ?? '';
 
-                // Handle message - may be array, object, or string
-                $description = $this->flatten_to_string($tariff['tariff_message'] ?? '');
+                // Use tariff_message for description/status
+                $description = $tariff['tariff_message'] ?? '';
 
                 $rates[] = array(
                     'tariff_name' => $tariff['tariff_label'] ?? '',
