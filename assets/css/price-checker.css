@@ -174,7 +174,6 @@
     align-items: center;
     justify-content: center;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.5);
     gap: 8px;
 }
 
@@ -228,10 +227,10 @@
     color: #666;
 }
 
-/* Savings badge - under image */
+/* Savings badge - centered under image */
 .nbpc-savings {
     display: inline-block;
-    padding: 4px 10px;
+    padding: 4px 12px;
     font-size: 0.7rem;
     font-weight: 700;
     color: #fff;
@@ -239,6 +238,7 @@
     border-radius: 4px;
     text-align: center;
     white-space: nowrap;
+    align-self: center;
 }
 
 /* Book Now Button - below price boxes */
