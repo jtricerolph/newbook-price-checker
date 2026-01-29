@@ -14,6 +14,16 @@ class NBPC_Ajax_Handler {
 
     private static $instance = null;
 
+    /**
+     * Rate limit: max requests per window
+     */
+    const RATE_LIMIT = 15;
+
+    /**
+     * Rate limit window in seconds
+     */
+    const RATE_WINDOW = 60;
+
     public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
@@ -35,6 +45,12 @@ class NBPC_Ajax_Handler {
      * Handle price check request
      */
     public function handle_price_check() {
+        // Check rate limit
+        if ($this->is_rate_limited()) {
+            wp_send_json_error(array('message' => 'Too many requests. Please wait a moment.'));
+            return;
+        }
+
         // Verify nonce
         if (!check_ajax_referer('nbpc_price_check', 'nonce', false)) {
             wp_send_json_error(array('message' => 'Security check failed'));
@@ -93,6 +109,12 @@ class NBPC_Ajax_Handler {
      * Handle fallback sites check
      */
     public function handle_fallback_check() {
+        // Check rate limit
+        if ($this->is_rate_limited()) {
+            wp_send_json_error(array('message' => 'Too many requests. Please wait a moment.'));
+            return;
+        }
+
         // Verify nonce
         if (!check_ajax_referer('nbpc_price_check', 'nonce', false)) {
             wp_send_json_error(array('message' => 'Security check failed'));
@@ -151,5 +173,52 @@ class NBPC_Ajax_Handler {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Check if current request is rate limited
+     *
+     * @return bool True if rate limited, false if allowed
+     */
+    private function is_rate_limited() {
+        $ip = $this->get_client_ip();
+        $key = 'nbpc_rate_' . md5($ip);
+
+        $count = get_transient($key);
+
+        if ($count === false) {
+            // First request in window
+            set_transient($key, 1, self::RATE_WINDOW);
+            return false;
+        }
+
+        if ($count >= self::RATE_LIMIT) {
+            return true;
+        }
+
+        // Increment counter
+        set_transient($key, $count + 1, self::RATE_WINDOW);
+        return false;
+    }
+
+    /**
+     * Get client IP address
+     *
+     * @return string IP address
+     */
+    private function get_client_ip() {
+        $ip = '';
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            // Can contain multiple IPs, get the first one
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ip = trim($ips[0]);
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        return sanitize_text_field($ip);
     }
 }
