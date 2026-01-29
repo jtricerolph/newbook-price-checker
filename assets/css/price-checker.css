@@ -164,6 +164,14 @@
 .nbpc-price-box.nbpc-highlight {
     background: #e8f5e9;
     border-color: #4caf50;
+    flex-direction: column;
+}
+
+/* Content wrapper for direct price box */
+.nbpc-price-content {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
 }
 
 /* Image container - 40% width */
@@ -227,10 +235,10 @@
     color: #666;
 }
 
-/* Savings badge - centered below price boxes */
+/* Savings badge - centered at bottom of direct price box */
 .nbpc-savings-wrap {
     text-align: center;
-    margin: 10px 0;
+    padding: 0 12px 10px;
 }
 
 .nbpc-savings {
