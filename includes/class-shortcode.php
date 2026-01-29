@@ -57,11 +57,15 @@ class NBPC_Shortcode {
             'show_fallback' => $atts['show_fallback'] !== 'false' && $plugin->get_option('enable_fallback', false),
             'title' => $atts['title'],
             'currency' => $plugin->get_currency_symbol(),
+            'direct_image' => $plugin->get_option('direct_image', ''),
+            'channel_image' => $plugin->get_option('channel_image', ''),
             'defaults' => array(
                 'adults' => $plugin->get_option('default_adults', 2),
                 'children' => $plugin->get_option('default_children', 0),
                 'max_adults' => $plugin->get_option('max_adults', 6),
                 'max_children' => $plugin->get_option('max_children', 4),
+                'nights' => $plugin->get_option('default_nights', 2),
+                'max_nights' => $plugin->get_option('max_nights', 14),
             ),
         );
 

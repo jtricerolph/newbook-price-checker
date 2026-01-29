@@ -4,7 +4,7 @@
 
 /* Widget Container */
 .nbpc-widget {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     font-family: inherit;
@@ -29,28 +29,51 @@
 
 .nbpc-form-row {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     margin-bottom: 15px;
 }
 
+/* Inline form - all fields in one row */
+.nbpc-form-inline {
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
 .nbpc-field {
-    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
+/* Date field - flexible but not too wide */
+.nbpc-field-date {
+    flex: 1 1 auto;
+    min-width: 140px;
+}
+
+/* Nights field - narrow */
+.nbpc-field-nights {
+    flex: 0 0 auto;
+    width: 80px;
+}
+
+/* Guest fields - narrow (single digit) */
+.nbpc-field-guests {
+    flex: 0 0 auto;
+    width: 80px;
+}
+
 .nbpc-field label {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     color: #333;
 }
 
 .nbpc-date-input,
 .nbpc-select {
     width: 100%;
-    padding: 10px 12px;
-    font-size: 1rem;
+    padding: 8px 10px;
+    font-size: 0.95rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     background: #fff;
@@ -69,8 +92,15 @@
 .nbpc-select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 36px;
+    background-position: right 8px center;
+    padding-right: 28px;
+}
+
+/* Narrower selects for nights/guests */
+.nbpc-field-nights .nbpc-select,
+.nbpc-field-guests .nbpc-select {
+    padding-right: 24px;
+    background-position: right 6px center;
 }
 
 /* Intro Text */
@@ -131,6 +161,15 @@
 .nbpc-price-box.nbpc-highlight {
     background: #e8f5e9;
     border-color: #4caf50;
+}
+
+/* Price box images */
+.nbpc-price-image {
+    display: block;
+    max-width: 80px;
+    max-height: 40px;
+    margin: 0 auto 10px;
+    object-fit: contain;
 }
 
 .nbpc-price-label {
@@ -307,14 +346,27 @@
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 540px) {
     .nbpc-widget {
         padding: 15px;
     }
 
-    .nbpc-form-row {
-        flex-direction: column;
-        gap: 10px;
+    .nbpc-form-inline {
+        flex-wrap: wrap;
+    }
+
+    /* Date takes full width on mobile */
+    .nbpc-field-date {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    /* Nights, adults, children share second row */
+    .nbpc-field-nights,
+    .nbpc-field-guests {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 70px;
     }
 
     .nbpc-price-comparison {

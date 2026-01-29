@@ -96,6 +96,42 @@ class NBPC_Admin_Settings {
             array('field' => 'max_children', 'default' => 4, 'min' => 0, 'max' => 10)
         );
 
+        add_settings_field(
+            'default_nights',
+            __('Default Nights', 'newbook-price-checker'),
+            array($this, 'render_number_field'),
+            'nbpc-settings',
+            'nbpc_display_section',
+            array('field' => 'default_nights', 'default' => 2, 'min' => 1, 'max' => 30)
+        );
+
+        add_settings_field(
+            'max_nights',
+            __('Max Nights Dropdown', 'newbook-price-checker'),
+            array($this, 'render_number_field'),
+            'nbpc-settings',
+            'nbpc_display_section',
+            array('field' => 'max_nights', 'default' => 14, 'min' => 1, 'max' => 30)
+        );
+
+        add_settings_field(
+            'direct_image',
+            __('Direct Booking Image URL', 'newbook-price-checker'),
+            array($this, 'render_url_field'),
+            'nbpc-settings',
+            'nbpc_display_section',
+            array('field' => 'direct_image', 'description' => 'Image shown for direct/online rates (leave empty for none)')
+        );
+
+        add_settings_field(
+            'channel_image',
+            __('Other Sites Image URL', 'newbook-price-checker'),
+            array($this, 'render_url_field'),
+            'nbpc-settings',
+            'nbpc_display_section',
+            array('field' => 'channel_image', 'description' => 'Image shown for OTA/channel rates (leave empty for none)')
+        );
+
         // Fallback Section
         add_settings_section(
             'nbpc_fallback_section',
@@ -400,6 +436,18 @@ class NBPC_Admin_Settings {
         <?php
     }
 
+    public function render_url_field($args) {
+        $options = get_option('nbpc_settings', array());
+        $value = isset($options[$args['field']]) ? $options[$args['field']] : '';
+        ?>
+        <input type="url" name="nbpc_settings[<?php echo esc_attr($args['field']); ?>]"
+               value="<?php echo esc_attr($value); ?>" class="large-text" />
+        <?php if (isset($args['description'])) : ?>
+            <p class="description"><?php echo esc_html($args['description']); ?></p>
+        <?php endif; ?>
+        <?php
+    }
+
     /**
      * Sanitize settings
      */
@@ -412,6 +460,10 @@ class NBPC_Admin_Settings {
         $sanitized['default_children'] = absint($input['default_children'] ?? 0);
         $sanitized['max_adults'] = absint($input['max_adults'] ?? 6);
         $sanitized['max_children'] = absint($input['max_children'] ?? 4);
+        $sanitized['default_nights'] = absint($input['default_nights'] ?? 2);
+        $sanitized['max_nights'] = absint($input['max_nights'] ?? 14);
+        $sanitized['direct_image'] = esc_url_raw($input['direct_image'] ?? '');
+        $sanitized['channel_image'] = esc_url_raw($input['channel_image'] ?? '');
 
         // Fallback
         $sanitized['enable_fallback'] = !empty($input['enable_fallback']);

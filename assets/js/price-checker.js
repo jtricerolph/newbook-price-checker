@@ -25,7 +25,7 @@
         // Cache DOM elements
         this.elements = {
             arriveInput: container.querySelector('.nbpc-arrive'),
-            departInput: container.querySelector('.nbpc-depart'),
+            nightsSelect: container.querySelector('.nbpc-nights'),
             adultsSelect: container.querySelector('.nbpc-adults'),
             childrenSelect: container.querySelector('.nbpc-children'),
             introSection: container.querySelector('.nbpc-intro'),
@@ -51,56 +51,36 @@
 
     NBPCWidget.prototype.init = function() {
         // Set up event listeners
-        this.elements.arriveInput.addEventListener('change', this.handleDateChange.bind(this));
-        this.elements.departInput.addEventListener('change', this.handleDateChange.bind(this));
-        this.elements.adultsSelect.addEventListener('change', this.handleGuestsChange.bind(this));
-        this.elements.childrenSelect.addEventListener('change', this.handleGuestsChange.bind(this));
+        this.elements.arriveInput.addEventListener('change', this.handleFieldChange.bind(this));
+        this.elements.nightsSelect.addEventListener('change', this.handleFieldChange.bind(this));
+        this.elements.adultsSelect.addEventListener('change', this.handleFieldChange.bind(this));
+        this.elements.childrenSelect.addEventListener('change', this.handleFieldChange.bind(this));
 
         // Show intro section initially
         this.showSection('intro');
     };
 
     /**
-     * Handle date field changes
+     * Handle any field change
      */
-    NBPCWidget.prototype.handleDateChange = function(event) {
-        const arriveDate = this.elements.arriveInput.value;
-        const departDate = this.elements.departInput.value;
-
-        // Update min date for departure based on arrival
-        if (event.target === this.elements.arriveInput && arriveDate) {
-            const minDepart = new Date(arriveDate);
-            minDepart.setDate(minDepart.getDate() + 1);
-            this.elements.departInput.min = this.formatDate(minDepart);
-
-            // If current depart is before new min, clear it
-            if (departDate && new Date(departDate) <= new Date(arriveDate)) {
-                this.elements.departInput.value = '';
-            }
-        }
-
-        // Update max date for arrival based on departure
-        if (event.target === this.elements.departInput && departDate) {
-            const maxArrive = new Date(departDate);
-            maxArrive.setDate(maxArrive.getDate() - 1);
-            this.elements.arriveInput.max = this.formatDate(maxArrive);
-        }
-
-        // Check if we can make a request
+    NBPCWidget.prototype.handleFieldChange = function() {
         this.checkAndFetch();
     };
 
     /**
-     * Handle guest selection changes
+     * Calculate departure date from arrival + nights
      */
-    NBPCWidget.prototype.handleGuestsChange = function() {
-        // Only fetch if dates are already selected
+    NBPCWidget.prototype.getDepartureDate = function() {
         const arriveDate = this.elements.arriveInput.value;
-        const departDate = this.elements.departInput.value;
+        const nights = parseInt(this.elements.nightsSelect.value, 10);
 
-        if (arriveDate && departDate) {
-            this.checkAndFetch();
+        if (!arriveDate || !nights) {
+            return null;
         }
+
+        const arrive = new Date(arriveDate);
+        arrive.setDate(arrive.getDate() + nights);
+        return this.formatDate(arrive);
     };
 
     /**
@@ -108,9 +88,8 @@
      */
     NBPCWidget.prototype.checkAndFetch = function() {
         const arriveDate = this.elements.arriveInput.value;
-        const departDate = this.elements.departInput.value;
 
-        if (!arriveDate || !departDate) {
+        if (!arriveDate) {
             return;
         }
 
@@ -123,14 +102,21 @@
      * Fetch prices from the server
      */
     NBPCWidget.prototype.fetchPrices = function() {
+        const arriveDate = this.elements.arriveInput.value;
+        const departDate = this.getDepartureDate();
+
+        if (!arriveDate || !departDate) {
+            return;
+        }
+
         this.showSection('loading');
 
         const formData = new FormData();
         formData.append('action', 'nbpc_price_check');
         formData.append('nonce', nbpcData.nonce);
         formData.append('site', this.siteCode);
-        formData.append('available_from', this.convertToAPIDate(this.elements.arriveInput.value));
-        formData.append('available_to', this.convertToAPIDate(this.elements.departInput.value));
+        formData.append('available_from', this.convertToAPIDate(arriveDate));
+        formData.append('available_to', this.convertToAPIDate(departDate));
         formData.append('adults', this.elements.adultsSelect.value);
         formData.append('children', this.elements.childrenSelect.value);
 
@@ -219,6 +205,9 @@
      * Fetch fallback property prices
      */
     NBPCWidget.prototype.fetchFallbackPrices = function() {
+        const arriveDate = this.elements.arriveInput.value;
+        const departDate = this.getDepartureDate();
+
         // Show fallback section with loading state
         this.elements.fallbackSection.style.display = 'block';
         this.elements.fallbackList.innerHTML =
@@ -231,8 +220,8 @@
         formData.append('action', 'nbpc_fallback_check');
         formData.append('nonce', nbpcData.nonce);
         formData.append('exclude_site', this.siteCode);
-        formData.append('available_from', this.convertToAPIDate(this.elements.arriveInput.value));
-        formData.append('available_to', this.convertToAPIDate(this.elements.departInput.value));
+        formData.append('available_from', this.convertToAPIDate(arriveDate));
+        formData.append('available_to', this.convertToAPIDate(departDate));
         formData.append('adults', this.elements.adultsSelect.value);
         formData.append('children', this.elements.childrenSelect.value);
 

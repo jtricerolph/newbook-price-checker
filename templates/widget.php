@@ -18,10 +18,10 @@ $widget_id = 'nbpc-widget-' . uniqid();
         <h3 class="nbpc-title"><?php echo esc_html($data['title']); ?></h3>
     <?php endif; ?>
 
-    <!-- Form Section -->
+    <!-- Form Section - All fields inline -->
     <div class="nbpc-form">
-        <div class="nbpc-form-row">
-            <div class="nbpc-field">
+        <div class="nbpc-form-row nbpc-form-inline">
+            <div class="nbpc-field nbpc-field-date">
                 <label for="<?php echo esc_attr($widget_id); ?>-arrive">
                     <?php esc_html_e('Arrival', 'newbook-price-checker'); ?>
                 </label>
@@ -32,20 +32,20 @@ $widget_id = 'nbpc-widget-' . uniqid();
                        required />
             </div>
 
-            <div class="nbpc-field">
-                <label for="<?php echo esc_attr($widget_id); ?>-depart">
-                    <?php esc_html_e('Departure', 'newbook-price-checker'); ?>
+            <div class="nbpc-field nbpc-field-nights">
+                <label for="<?php echo esc_attr($widget_id); ?>-nights">
+                    <?php esc_html_e('Nights', 'newbook-price-checker'); ?>
                 </label>
-                <input type="date"
-                       id="<?php echo esc_attr($widget_id); ?>-depart"
-                       class="nbpc-date-input nbpc-depart"
-                       min="<?php echo esc_attr(date('Y-m-d', strtotime('+1 day'))); ?>"
-                       required />
+                <select id="<?php echo esc_attr($widget_id); ?>-nights" class="nbpc-select nbpc-nights">
+                    <?php for ($i = 1; $i <= $data['defaults']['max_nights']; $i++) : ?>
+                        <option value="<?php echo esc_attr($i); ?>" <?php selected($i, $data['defaults']['nights']); ?>>
+                            <?php echo esc_html($i); ?>
+                        </option>
+                    <?php endfor; ?>
+                </select>
             </div>
-        </div>
 
-        <div class="nbpc-form-row">
-            <div class="nbpc-field">
+            <div class="nbpc-field nbpc-field-guests">
                 <label for="<?php echo esc_attr($widget_id); ?>-adults">
                     <?php esc_html_e('Adults', 'newbook-price-checker'); ?>
                 </label>
@@ -58,7 +58,7 @@ $widget_id = 'nbpc-widget-' . uniqid();
                 </select>
             </div>
 
-            <div class="nbpc-field">
+            <div class="nbpc-field nbpc-field-guests">
                 <label for="<?php echo esc_attr($widget_id); ?>-children">
                     <?php esc_html_e('Children', 'newbook-price-checker'); ?>
                 </label>
@@ -88,12 +88,18 @@ $widget_id = 'nbpc-widget-' . uniqid();
     <div class="nbpc-results" style="display: none;">
         <div class="nbpc-price-comparison">
             <div class="nbpc-price-box nbpc-channel-price">
+                <?php if (!empty($data['channel_image'])) : ?>
+                    <img src="<?php echo esc_url($data['channel_image']); ?>" alt="<?php esc_attr_e('Other Sites', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
+                <?php endif; ?>
                 <span class="nbpc-price-label"><?php esc_html_e('Other Sites', 'newbook-price-checker'); ?></span>
                 <span class="nbpc-price-value nbpc-channel-value"></span>
                 <span class="nbpc-room-type nbpc-channel-room"></span>
             </div>
 
             <div class="nbpc-price-box nbpc-online-price nbpc-highlight">
+                <?php if (!empty($data['direct_image'])) : ?>
+                    <img src="<?php echo esc_url($data['direct_image']); ?>" alt="<?php esc_attr_e('Book Direct', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
+                <?php endif; ?>
                 <span class="nbpc-price-label"><?php esc_html_e('Book Direct', 'newbook-price-checker'); ?></span>
                 <span class="nbpc-price-value nbpc-online-value"></span>
                 <span class="nbpc-room-type nbpc-online-room"></span>
