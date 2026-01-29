@@ -135,17 +135,11 @@ class NBPC_NewBook_API {
                     continue;
                 }
 
-                // Handle inclusions - may be array or string
-                $inclusions = $tariff['tariff_inclusions'] ?? '';
-                if (is_array($inclusions)) {
-                    $inclusions = implode(', ', array_filter($inclusions));
-                }
+                // Handle inclusions - may be array, object, or string
+                $inclusions = $this->flatten_to_string($tariff['tariff_inclusions'] ?? '');
 
-                // Handle message - may be array or string
-                $description = $tariff['tariff_message'] ?? '';
-                if (is_array($description)) {
-                    $description = implode(', ', array_filter($description));
-                }
+                // Handle message - may be array, object, or string
+                $description = $this->flatten_to_string($tariff['tariff_message'] ?? '');
 
                 $rates[] = array(
                     'tariff_name' => $tariff['tariff_label'] ?? '',
@@ -165,6 +159,60 @@ class NBPC_NewBook_API {
         }
 
         return $grouped;
+    }
+
+    /**
+     * Flatten any data type to a readable string
+     * Handles strings, arrays, objects, and nested structures
+     */
+    private function flatten_to_string($data) {
+        if (empty($data)) {
+            return '';
+        }
+
+        if (is_string($data)) {
+            return $data;
+        }
+
+        if (is_array($data)) {
+            $strings = array();
+            foreach ($data as $key => $value) {
+                if (is_string($value)) {
+                    $strings[] = $value;
+                } elseif (is_array($value) || is_object($value)) {
+                    // Try to extract common text fields from objects/arrays
+                    $value = (array) $value;
+                    if (isset($value['name'])) {
+                        $strings[] = $value['name'];
+                    } elseif (isset($value['label'])) {
+                        $strings[] = $value['label'];
+                    } elseif (isset($value['text'])) {
+                        $strings[] = $value['text'];
+                    } elseif (isset($value['description'])) {
+                        $strings[] = $value['description'];
+                    } elseif (isset($value['value'])) {
+                        $strings[] = $value['value'];
+                    } else {
+                        // Try first string value found
+                        foreach ($value as $v) {
+                            if (is_string($v) && !empty($v)) {
+                                $strings[] = $v;
+                                break;
+                            }
+                        }
+                    }
+                } elseif (is_numeric($value)) {
+                    $strings[] = (string) $value;
+                }
+            }
+            return implode(', ', array_filter($strings));
+        }
+
+        if (is_object($data)) {
+            return $this->flatten_to_string((array) $data);
+        }
+
+        return (string) $data;
     }
 
     /**
