@@ -135,12 +135,20 @@
      * Handle price check response
      */
     NBPCWidget.prototype.handlePriceResponse = function(response) {
+        // Debug: Log full response to console
+        console.log('NBPC Response:', response);
+        console.log('NBPC Data:', response.data);
+
         if (!response.success) {
             this.showError(response.data?.message || 'An error occurred');
             return;
         }
 
         const data = response.data;
+
+        // Debug: Log availability details
+        console.log('NBPC Online:', data.online);
+        console.log('NBPC Channels:', data.channels);
 
         // Check if online rates are available
         if (data.online && data.online.available) {

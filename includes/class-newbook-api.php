@@ -157,6 +157,8 @@ class NBPC_NewBook_API {
                 'room_type' => '',
                 'tariff_name' => '',
                 'message' => '',
+                'min_nights' => 0,
+                'debug_raw' => $data,
             );
         }
 
@@ -164,18 +166,54 @@ class NBPC_NewBook_API {
         $cheapest_room = '';
         $cheapest_tariff = '';
         $message = '';
+        $min_nights = 0;
+        $all_tariff_messages = array();
 
         foreach ($data['data'] as $category) {
-            if (empty($category['sites_available']) || $category['sites_available'] <= 0) {
-                continue;
-            }
+            $category_name = $category['category_name'] ?? 'Unknown';
 
             if (empty($category['tariffs_available'])) {
                 continue;
             }
 
             foreach ($category['tariffs_available'] as $tariff) {
-                if (empty($tariff['tariff_success']) || $tariff['tariff_success'] !== 'true') {
+                $tariff_label = $tariff['tariff_label'] ?? '';
+                $tariff_message = $tariff['tariff_message'] ?? '';
+                $tariff_success = $tariff['tariff_success'] ?? '';
+                $tariff_min_nights = isset($tariff['tariff_min_nights']) ? intval($tariff['tariff_min_nights']) : 0;
+
+                // Collect all messages for debugging
+                if (!empty($tariff_message)) {
+                    $all_tariff_messages[] = array(
+                        'category' => $category_name,
+                        'tariff' => $tariff_label,
+                        'success' => $tariff_success,
+                        'message' => $tariff_message,
+                        'min_nights' => $tariff_min_nights,
+                    );
+                }
+
+                // Track minimum nights from failed tariffs
+                if ($tariff_success !== 'true' && $tariff_min_nights > 0) {
+                    if ($min_nights === 0 || $tariff_min_nights < $min_nights) {
+                        $min_nights = $tariff_min_nights;
+                    }
+                }
+
+                // Check for minimum nights in message (fallback)
+                if ($tariff_success !== 'true' && preg_match('/(\d+)\s*night\s*minimum/i', $tariff_message, $matches)) {
+                    $msg_min = intval($matches[1]);
+                    if ($min_nights === 0 || $msg_min < $min_nights) {
+                        $min_nights = $msg_min;
+                    }
+                }
+
+                // Skip unavailable
+                if (empty($category['sites_available']) || $category['sites_available'] <= 0) {
+                    continue;
+                }
+
+                if ($tariff_success !== 'true') {
                     continue;
                 }
 
@@ -183,9 +221,9 @@ class NBPC_NewBook_API {
 
                 if ($price > 0 && ($cheapest_price === 0 || $price < $cheapest_price)) {
                     $cheapest_price = $price;
-                    $cheapest_room = $category['category_name'] ?? '';
-                    $cheapest_tariff = $tariff['tariff_label'] ?? '';
-                    $message = $tariff['tariff_message'] ?? '';
+                    $cheapest_room = $category_name;
+                    $cheapest_tariff = $tariff_label;
+                    $message = $tariff_message;
                 }
             }
         }
@@ -196,6 +234,9 @@ class NBPC_NewBook_API {
             'room_type' => $cheapest_room,
             'tariff_name' => $cheapest_tariff,
             'message' => $message,
+            'min_nights' => $min_nights,
+            'debug_messages' => $all_tariff_messages,
+            'debug_raw' => $data,
         );
     }
 
