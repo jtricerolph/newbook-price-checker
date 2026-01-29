@@ -170,6 +170,45 @@ class NBPC_Admin_Settings {
                 submit_button(__('Save Settings', 'newbook-price-checker'));
                 ?>
             </form>
+
+            <hr style="margin: 30px 0;" />
+
+            <h2><?php esc_html_e('Shortcode Reference', 'newbook-price-checker'); ?></h2>
+            <p><?php esc_html_e('Use these shortcodes to display the price checker on any page or post.', 'newbook-price-checker'); ?></p>
+
+            <table class="widefat" style="max-width: 800px;">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e('Shortcode', 'newbook-price-checker'); ?></th>
+                        <th><?php esc_html_e('Description', 'newbook-price-checker'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>[newbook_price_checker]</code></td>
+                        <td><?php esc_html_e('Basic usage - uses primary site', 'newbook-price-checker'); ?></td>
+                    </tr>
+                    <tr>
+                        <td><code>[newbook_price_checker site="NO4"]</code></td>
+                        <td><?php esc_html_e('Specify a site code to override the primary', 'newbook-price-checker'); ?></td>
+                    </tr>
+                    <tr>
+                        <td><code>[newbook_price_checker title="Check Our Rates"]</code></td>
+                        <td><?php esc_html_e('Add a heading above the widget', 'newbook-price-checker'); ?></td>
+                    </tr>
+                    <tr>
+                        <td><code>[newbook_price_checker show_fallback="false"]</code></td>
+                        <td><?php esc_html_e('Disable fallback properties for this widget', 'newbook-price-checker'); ?></td>
+                    </tr>
+                    <tr>
+                        <td><code>[newbook_price_checker booking_url="https://..."]</code></td>
+                        <td><?php esc_html_e('Override the booking URL for the Book Now button', 'newbook-price-checker'); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 20px;"><?php esc_html_e('Combined Example', 'newbook-price-checker'); ?></h3>
+            <p><code>[newbook_price_checker site="NO4" title="Book Direct & Save" show_fallback="true"]</code></p>
         </div>
         <?php
     }
