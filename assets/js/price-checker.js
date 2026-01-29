@@ -199,6 +199,19 @@
      * Show unavailable state and fetch fallback properties
      */
     NBPCWidget.prototype.showUnavailable = function(data) {
+        // Check if it's a minimum nights issue
+        const minNights = data.online?.min_nights || 0;
+        const selectedNights = parseInt(this.elements.nightsSelect.value, 10);
+        const unavailableMsg = this.container.querySelector('.nbpc-unavailable-message');
+
+        if (minNights > 0 && selectedNights < minNights) {
+            // Minimum nights restriction
+            unavailableMsg.textContent = 'Direct rates require a minimum ' + minNights + ' night stay. Please select ' + minNights + '+ nights.';
+        } else {
+            // Genuine unavailability
+            unavailableMsg.textContent = 'Sorry, no availability for your selected dates.';
+        }
+
         this.showSection('unavailable');
 
         // Check if we should show fallback
