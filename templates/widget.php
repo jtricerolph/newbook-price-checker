@@ -87,23 +87,29 @@ $widget_id = 'nbpc-widget-' . uniqid();
     <!-- Results Section -->
     <div class="nbpc-results" style="display: none;">
         <div class="nbpc-price-comparison">
+            <!-- Other Sites (Channel) Price -->
             <div class="nbpc-price-box nbpc-channel-price">
                 <?php if (!empty($data['channel_image'])) : ?>
                     <img src="<?php echo esc_url($data['channel_image']); ?>" alt="<?php esc_attr_e('Other Sites', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
                 <?php endif; ?>
-                <span class="nbpc-price-label"><?php esc_html_e('Other Sites', 'newbook-price-checker'); ?></span>
-                <span class="nbpc-price-value nbpc-channel-value"></span>
-                <span class="nbpc-room-type nbpc-channel-room"></span>
+                <div class="nbpc-price-text">
+                    <span class="nbpc-price-label"><?php esc_html_e('Other Sites', 'newbook-price-checker'); ?></span>
+                    <span class="nbpc-price-value nbpc-channel-value"></span>
+                    <span class="nbpc-room-type nbpc-channel-room"></span>
+                </div>
             </div>
 
+            <!-- Direct Price -->
             <div class="nbpc-price-box nbpc-online-price nbpc-highlight">
                 <?php if (!empty($data['direct_image'])) : ?>
                     <img src="<?php echo esc_url($data['direct_image']); ?>" alt="<?php esc_attr_e('Book Direct', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
                 <?php endif; ?>
-                <span class="nbpc-price-label"><?php esc_html_e('Book Direct', 'newbook-price-checker'); ?></span>
-                <span class="nbpc-price-value nbpc-online-value"></span>
-                <span class="nbpc-room-type nbpc-online-room"></span>
-                <span class="nbpc-savings"></span>
+                <div class="nbpc-price-text">
+                    <span class="nbpc-price-label"><?php esc_html_e('Book Direct', 'newbook-price-checker'); ?></span>
+                    <span class="nbpc-price-value nbpc-online-value"></span>
+                    <span class="nbpc-room-type nbpc-online-room"></span>
+                    <span class="nbpc-savings"></span>
+                </div>
             </div>
         </div>
 
