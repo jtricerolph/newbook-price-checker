@@ -290,7 +290,8 @@
         let html = '';
 
         room.rates.forEach(function(rate) {
-            const description = rate.description || rate.inclusions || '';
+            // Prefer inclusions (e.g. "includes full breakfast") over generic message
+            const description = rate.inclusions || rate.description || '';
             html += '<div class="nbpc-rate-item">' +
                 '<div class="nbpc-rate-info">' +
                 '<div class="nbpc-rate-name">' + this.escapeHtml(rate.tariff_name) + '</div>' +
