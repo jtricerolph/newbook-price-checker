@@ -135,20 +135,12 @@
      * Handle price check response
      */
     NBPCWidget.prototype.handlePriceResponse = function(response) {
-        // Debug: Log full response to console
-        console.log('NBPC Response:', response);
-        console.log('NBPC Data:', response.data);
-
         if (!response.success) {
             this.showError(response.data?.message || 'An error occurred');
             return;
         }
 
         const data = response.data;
-
-        // Debug: Log availability details
-        console.log('NBPC Online:', data.online);
-        console.log('NBPC Channels:', data.channels);
 
         // Check if online rates are available
         if (data.online && data.online.available) {
@@ -187,9 +179,12 @@
             this.elements.savings.style.display = 'none';
         }
 
-        // Update booking URL on price link
-        if (data.booking_url && this.elements.priceLink) {
-            this.elements.priceLink.href = data.booking_url;
+        // Update booking URL on all price links
+        if (data.booking_url) {
+            const priceLinks = this.container.querySelectorAll('.nbpc-price-link');
+            priceLinks.forEach(function(link) {
+                link.href = data.booking_url;
+            });
         }
 
         this.showSection('results');
@@ -206,7 +201,7 @@
 
         if (minNights > 0 && selectedNights < minNights) {
             // Minimum nights restriction - show message with button
-            unavailableMsg.innerHTML = 'Direct rates require a minimum ' + minNights + ' night stay. ' +
+            unavailableMsg.innerHTML = 'These dates require a minimum ' + minNights + ' night stay. ' +
                 '<button type="button" class="nbpc-min-nights-btn" data-nights="' + minNights + '">' +
                 'Check ' + minNights + ' nights</button>';
 
@@ -314,8 +309,7 @@
     /**
      * Handle fetch errors
      */
-    NBPCWidget.prototype.handleError = function(error) {
-        console.error('NBPC Error:', error);
+    NBPCWidget.prototype.handleError = function() {
         this.showError('Failed to check prices. Please try again.');
     };
 

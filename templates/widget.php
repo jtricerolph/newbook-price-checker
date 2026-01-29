@@ -115,8 +115,15 @@ $widget_id = 'nbpc-widget-' . uniqid();
                     <span class="nbpc-price-label"><?php esc_html_e('Book Direct', 'newbook-price-checker'); ?></span>
                     <span class="nbpc-price-value nbpc-online-value"></span>
                     <span class="nbpc-room-type nbpc-online-room"></span>
-                    <span class="nbpc-book-now-badge"><?php esc_html_e('Book Now', 'newbook-price-checker'); ?></span>
+                    <span class="nbpc-spacer"></span>
                 </div>
+            </a>
+        </div>
+
+        <!-- Book Now Button -->
+        <div class="nbpc-book-now-wrap">
+            <a href="#" class="nbpc-book-now-btn nbpc-price-link" target="_blank" rel="noopener">
+                <?php esc_html_e('Book Now', 'newbook-price-checker'); ?>
             </a>
         </div>
     </div>

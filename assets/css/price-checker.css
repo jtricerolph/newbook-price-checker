@@ -241,18 +241,37 @@
     white-space: nowrap;
 }
 
-/* Book now badge - under text */
-.nbpc-book-now-badge {
+/* Book Now Button - below price boxes */
+.nbpc-book-now-wrap {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.nbpc-book-now-btn {
     display: inline-block;
-    padding: 6px 14px;
-    margin-top: 6px;
-    font-size: 0.75rem;
+    padding: 12px 40px;
+    font-size: 1rem;
     font-weight: 700;
     color: #fff;
-    background: #0073aa;
-    border-radius: 4px;
+    background: #4caf50;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.nbpc-book-now-btn:hover {
+    background: #43a047;
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.nbpc-book-now-btn:active {
+    transform: translateY(0);
 }
 
 /* Clickable price box link */
