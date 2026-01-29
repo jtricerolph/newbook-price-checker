@@ -109,15 +109,18 @@ $widget_id = 'nbpc-widget-' . uniqid();
                     <?php if (!empty($data['direct_image'])) : ?>
                         <img src="<?php echo esc_url($data['direct_image']); ?>" alt="<?php esc_attr_e('Book Direct', 'newbook-price-checker'); ?>" class="nbpc-price-image" />
                     <?php endif; ?>
-                    <span class="nbpc-savings"></span>
                 </div>
                 <div class="nbpc-price-text">
                     <span class="nbpc-price-label"><?php esc_html_e('Book Direct', 'newbook-price-checker'); ?></span>
                     <span class="nbpc-price-value nbpc-online-value"></span>
                     <span class="nbpc-room-type nbpc-online-room"></span>
-                    <span class="nbpc-spacer"></span>
                 </div>
             </a>
+        </div>
+
+        <!-- Savings Badge -->
+        <div class="nbpc-savings-wrap">
+            <span class="nbpc-savings"></span>
         </div>
 
         <!-- Book Now Button -->

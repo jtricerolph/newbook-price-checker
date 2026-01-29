@@ -227,18 +227,23 @@
     color: #666;
 }
 
-/* Savings badge - centered under image */
+/* Savings badge - centered below price boxes */
+.nbpc-savings-wrap {
+    text-align: center;
+    margin: 10px 0;
+}
+
 .nbpc-savings {
     display: inline-block;
-    padding: 4px 12px;
-    font-size: 0.7rem;
+    padding: 6px 16px;
+    font-size: 0.8rem;
     font-weight: 700;
-    color: #fff;
-    background: #4caf50;
+    color: #4caf50;
+    background: transparent;
+    border: 2px solid #4caf50;
     border-radius: 4px;
     text-align: center;
     white-space: nowrap;
-    align-self: center;
 }
 
 /* Book Now Button - below price boxes */
@@ -457,8 +462,8 @@
     }
 
     .nbpc-savings {
-        font-size: 0.65rem;
-        padding: 3px 8px;
+        font-size: 0.75rem;
+        padding: 5px 12px;
     }
 
     .nbpc-book-now-badge {
